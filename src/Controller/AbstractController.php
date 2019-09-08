@@ -50,9 +50,9 @@ abstract class AbstractController
             1
         );
         $this->twig            = new TwigEnvironment(
-            new FilesystemLoader(Environment::get()->var('TWIG_TEMPLATES_DIR')), [
-                'cache' => (Environment::get()->var('APP_ENV') === 'prod') ? Environment::get()->var('TWIG_CACHE') : false,
-                'debug' => (Environment::get()->var('APP_ENV') === 'prod') ? false : true,
+            new FilesystemLoader(Environment::get()->findVar('TWIG_TEMPLATES_DIR')), [
+                'cache' => (Environment::get()->findVar('APP_ENV') === 'prod') ? Environment::get()->findVar('TWIG_CACHE') : false,
+                'debug' => (Environment::get()->findVar('APP_ENV') === 'prod') ? false : true,
             ]
         );
 
