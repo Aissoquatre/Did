@@ -46,7 +46,7 @@ class Router
 
             $config->matchRoute($params);
         } catch(\Exception $e) {
-            if (Environment::get()->var('APP_ENV') === 'dev') {
+            if (Environment::get()->findVar('APP_ENV') === 'dev') {
                 Catcher::devCatch($e);
             }
         }
