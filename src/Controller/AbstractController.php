@@ -3,6 +3,7 @@
 namespace Did\Controller;
 
 use Did\Kernel\Environment;
+use Did\Routing\Params\Params;
 use ReflectionClass;
 use Twig\Environment as TwigEnvironment;
 use Twig\Extension\DebugExtension;
@@ -37,10 +38,18 @@ abstract class AbstractController
     protected $bundleName;
 
     /**
-     * AbstractController constructor.
+     * @var Params
      */
-    public function __construct()
+    protected $params;
+
+    /**
+     * AbstractController constructor.
+     *
+     * @param Params $params
+     */
+    public function __construct(Params $params)
     {
+        $this->params          = $params;
         $this->reflectionClass = new ReflectionClass($this);
         $this->bundleName      = substr(
             strstr(
@@ -60,6 +69,30 @@ abstract class AbstractController
         $this->twig->addGlobal('_session', $_SESSION);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
+    }
+
+    /**
+     * @return array
+     */
+    public function server(): array
+    {
+        return $this->params->getServer();
+    }
+
+    /**
+     * @return array
+     */
+    public function get(): array
+    {
+        return $this->params->getGet();
+    }
+
+    /**
+     * @return array
+     */
+    public function post(): array
+    {
+        return $this->params->getPost();
     }
 
     /**
