@@ -8,7 +8,7 @@ use Did\Routing\Params\Params;
  * Interface RoutingConfigInterface
  *
  * @package Did\Routing
- * @author Julien Bernard <hello@julien-bernard.com>
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 interface RoutingConfigInterface
 {

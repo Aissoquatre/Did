@@ -1,11 +1,11 @@
 <?php
 
-namespace SP\Commons\Libs;
+namespace Did\Tools;
 
 /**
  * Class StringTool
  *
- * @package Sp\Commons\Libs
+ * @package Did\Tools
  * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 class StringTool

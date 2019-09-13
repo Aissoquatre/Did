@@ -10,7 +10,7 @@ use Did\Routing\Params\ParamsInterface;
  * Class Router
  *
  * @package Did\Routing
- * @author Julien Bernard <hello@julien-bernard.com>
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 class Router
 {

@@ -2,7 +2,12 @@
 
 namespace Did\Routing\Params;
 
-
+/**
+ * Class Params
+ *
+ * @package Did\Routing\Params
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
+ */
 abstract class Params implements ParamsInterface
 {
     /** @var array */

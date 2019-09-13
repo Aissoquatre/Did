@@ -5,7 +5,7 @@ namespace Did\Routing\Params;
 /**
  * Class DefaultParams
  *
- * @package Did\Routing\Params
+ * @package (c) Did\Routing\Params
  */
 class DefaultParams extends Params
 {

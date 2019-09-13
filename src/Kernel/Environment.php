@@ -6,7 +6,7 @@ namespace Did\Kernel;
  * Class AbstractController
  *
  * @package Did\Controller
- * @author Julien Bernard <hello@julien-bernard.com>
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 class Environment
 {

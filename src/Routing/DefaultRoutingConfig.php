@@ -9,7 +9,7 @@ use Did\Routing\Params\Params;
  * Class DefaultRoutingConfig
  *
  * @package Did\Routing
- * @author Julien Bernard <hello@julien-bernard.com>
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 class DefaultRoutingConfig implements RoutingConfigInterface
 {

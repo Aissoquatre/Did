@@ -6,7 +6,7 @@ namespace Did\Routing\Params;
  * Interface ParamsInterface
  *
  * @package Did\Routing\Params
- *
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 interface ParamsInterface
 {

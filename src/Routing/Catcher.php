@@ -6,7 +6,7 @@ namespace Did\Routing;
  * Class Catcher
  *
  * @package Did\Routing
- * @author Julien Bernard <hello@julien-bernard.com>
+ * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
 class Catcher
 {
