@@ -2,6 +2,7 @@
 
 namespace Did\Database;
 
+use DateTime;
 use PDO;
 use ReflectionClass;
 use Did\Tools\StringTool;
@@ -107,7 +108,7 @@ class SmartConnector extends AbstractConnection
         return sprintf(
             'INSERT INTO %s SET %s',
             $this->getTable(),
-            $this->serialize($this->getOwnProps())
+            $this->serialize($this->getOwnProps(), true)
         );
     }
 
@@ -129,18 +130,24 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $props
+     * @param bool $isNew
      * @return string
      */
-    private function serialize(array $props): string
+    private function serialize(array $props, bool $isNew = false): string
     {
         $return = [];
 
         foreach ($props as $prop) {
-            if ($prop === 'id') {
+            if (in_array($prop, ['id', 'updatedAt'])) {
                 continue;
             }
 
             $value = $this->smartFormat($this->{'get' . ucfirst($prop)}());
+
+            if ($isNew && $prop === 'createdAt' && !$value) {
+                $value = $this->smartFormat((new DateTime())->format('Y-m-d H:i:s'));
+            }
+
 
             $return[] = '`' . $prop . '` = ' . ($value ?: 'NULL');
         }
