@@ -19,11 +19,21 @@ class SmartConnector extends AbstractConnection
 {
     protected $childClass;
 
+    protected $errors = [];
+
     public function __construct()
     {
         parent::connect();
 
         $this->childClass = new ReflectionClass($this);
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 
     /**
