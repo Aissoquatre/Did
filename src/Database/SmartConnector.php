@@ -38,7 +38,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param string $classname
-     * @return static
+     * @return mixed
      */
     public static function model($classname)
     {
@@ -49,7 +49,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $datas
-     * @return $this
+     * @return mixed
      */
     public function setAttributes(array $datas)
     {
@@ -62,7 +62,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
-     * @return null|$this
+     * @return mixed
      */
     public function find(array $criterias = [])
     {
@@ -205,7 +205,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $row
-     * @return $this
+     * @return mixed
      */
     private function toObject(array $row)
     {
