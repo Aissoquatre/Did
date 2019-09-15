@@ -3,6 +3,7 @@
 namespace Did\Database;
 
 use DateTime;
+use Did\Kernel\Environment;
 use PDO;
 use ReflectionClass;
 use Did\Tools\StringTool;
@@ -43,7 +44,7 @@ class SmartConnector extends AbstractConnection
      */
     public static function model($classname)
     {
-        $classname = $_SESSION['defaultNamespaceForRoutingConfig'] . '\Entity\\' . $classname;
+        $classname = Environment::get()->findVar('APP_NAMESPACE') . '\Entity\\' . $classname;
 
         return new $classname();
     }
@@ -70,12 +71,37 @@ class SmartConnector extends AbstractConnection
         $return  = null;
         $request = $this->db->prepare(
             sprintf(
-                'SELECT %s FROM %s %s',
+                'SELECT %s FROM %s %s LIMIT 1',
                 '*',
                 $this->getTable(),
                 $this->createConditions($criterias)
             )
         );
+        $res = $request->execute();
+
+        if ($res && ($res = $request->fetch(PDO::FETCH_ASSOC))) {
+            $return = $this->toObject($res);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function findById(int $id)
+    {
+        $return = null;
+        $request = $this->db->prepare(
+            sprintf(
+                'SELECT %s FROM %s WHERE id = %s',
+                '*',
+                $this->getTable(),
+                $id
+            )
+        );
+
         $res = $request->execute();
 
         if ($res && ($res = $request->fetch(PDO::FETCH_ASSOC))) {

@@ -72,6 +72,14 @@ abstract class AbstractController
     }
 
     /**
+     * @param array $params
+     */
+    protected function setGlobal(array $params)
+    {
+        $this->twig->addGlobal($params['name'], $params['value']);
+    }
+
+    /**
      * @return array
      */
     public function server(): array

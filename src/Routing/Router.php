@@ -34,7 +34,7 @@ class Router
      */
     public function __construct(?RoutingConfigInterface $config = null, ?ParamsInterface $params = null)
     {
-        $this->config = $config ?: new DefaultRoutingConfig($_SESSION['defaultNamespaceForRoutingConfig']);
+        $this->config = $config ?: new DefaultRoutingConfig(Environment::get()->findVar('APP_NAMESPACE'));
         $this->params = $params ?: new DefaultParams(true);
     }
 
