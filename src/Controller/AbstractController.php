@@ -8,6 +8,7 @@ use ReflectionClass;
 use Twig\Environment as TwigEnvironment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 
 /**
  * Class AbstractController
@@ -77,6 +78,14 @@ abstract class AbstractController
     protected function setGlobal(array $params)
     {
         $this->twig->addGlobal($params['name'], $params['value']);
+    }
+
+    /**
+     * @param array $params
+     */
+    protected function addFilter(array $params)
+    {
+        $this->twig->addFilter(new TwigFilter($params['name'], $params['callable']));
     }
 
     /**
