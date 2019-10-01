@@ -64,6 +64,32 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
+     * @return array
+     */
+    public function findAll(array $criterias = [])
+    {
+        $return  = [];
+        $request = $this->db->prepare(
+            sprintf(
+                'SELECT %s FROM %s %s',
+                '*',
+                $this->getTable(),
+                $this->createConditions($criterias)
+            )
+        );
+        $res = $request->execute();
+
+        if ($res && ($res = $request->fetchAll(PDO::FETCH_ASSOC))) {
+            foreach ($res as $row) {
+                $return[] = $this->toObject($row);
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param array $criterias
      * @return mixed
      */
     public function find(array $criterias = [])

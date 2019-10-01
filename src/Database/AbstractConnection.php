@@ -24,7 +24,7 @@ abstract class AbstractConnection
 
         try {
             $this->db = new PDO(
-                'mysql:host=' . $database['host'] . ';port=' . $database['port'] . ';dbname=' . $database['dbname'],
+                'mysql:host=' . $database['host'] . ';port=' . $database['port'] . ';dbname=' . $database['dbname'] . ';charset=utf8',
                 $database['user'],
                 $database['password']
             );
