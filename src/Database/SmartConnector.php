@@ -141,7 +141,28 @@ class SmartConnector extends AbstractConnection
     {
         try {
             $request = $this->db->prepare(
-                $this->getId() ? $this->update() : $this->insert()
+                method_exists($this, 'getId') && $this->getId() ? $this->update() : $this->insert()
+            );
+
+            return $request->execute();
+        } catch (\PDOException $exception) {
+            throw new \PDOException($exception);
+        }
+    }
+
+    /**
+     * @param array $criterias
+     * @return array
+     */
+    public function delete(array $criterias = [])
+    {
+        try {
+            $request = $this->db->prepare(
+                sprintf(
+                    'DELETE FROM %s %s',
+                    $this->getTable(),
+                    $this->createConditions($criterias)
+                )
             );
 
             return $request->execute();
