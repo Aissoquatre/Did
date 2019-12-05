@@ -21,7 +21,9 @@ class SmartConnector extends AbstractConnection
 {
     protected $childClass;
 
-    protected $errors = [];
+    protected $errors          = [];
+
+    protected $selectedColumns = [];
 
     public function __construct()
     {
@@ -36,6 +38,14 @@ class SmartConnector extends AbstractConnection
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSelectedColumns()
+    {
+        return implode(',', $this->selectedColumns);
     }
 
     /**
@@ -63,6 +73,41 @@ class SmartConnector extends AbstractConnection
     }
 
     /**
+     * @param string|array $columnName
+     * @return mixed
+     */
+    public function select($columnName)
+    {
+        $this->selectedColumns = is_array($columnName) ? $columnName : [$columnName];
+
+        return $this;
+    }
+
+    /**
+     * @param array $criterias
+     * @return null|int
+     */
+    public function count(array $criterias = [])
+    {
+        $return  = null;
+        $request = $this->db->prepare(
+            sprintf(
+                'SELECT COUNT(%s) as counter FROM %s %s',
+                $this->getSelectedColumns() ? $this->getSelectedColumns() : static::COUNT_KEY,
+                $this->getTable(),
+                $this->createConditions($criterias)
+            )
+        );
+        $res = $request->execute();
+
+        if ($res && ($res = $request->fetch(PDO::FETCH_ASSOC))) {
+            $return = $res['counter'];
+        }
+
+        return $return;
+    }
+
+    /**
      * @param array $criterias
      * @return array
      */
@@ -72,7 +117,7 @@ class SmartConnector extends AbstractConnection
         $request = $this->db->prepare(
             sprintf(
                 'SELECT %s FROM %s %s',
-                '*',
+                $this->getSelectedColumns() ? $this->getSelectedColumns() : '*',
                 $this->getTable(),
                 $this->createConditions($criterias)
             )
@@ -98,7 +143,7 @@ class SmartConnector extends AbstractConnection
         $request = $this->db->prepare(
             sprintf(
                 'SELECT %s FROM %s %s LIMIT 1',
-                '*',
+                $this->getSelectedColumns() ? $this->getSelectedColumns() : '*',
                 $this->getTable(),
                 $this->createConditions($criterias)
             )
@@ -122,7 +167,7 @@ class SmartConnector extends AbstractConnection
         $request = $this->db->prepare(
             sprintf(
                 'SELECT %s FROM %s WHERE id = %s',
-                '*',
+                $this->getSelectedColumns() ? $this->getSelectedColumns() : '*',
                 $this->getTable(),
                 $id
             )
