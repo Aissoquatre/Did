@@ -19,6 +19,9 @@ abstract class Params implements ParamsInterface
     /** @var array */
     protected $server;
 
+    /** @var array */
+    protected $json;
+
     /**
      * {@inheritdoc}
      */
@@ -41,6 +44,7 @@ abstract class Params implements ParamsInterface
         $this->get    = $_GET;
         $this->post   = $_POST;
         $this->server = $_SERVER;
+        $this->json   = json_decode(file_get_contents('php://input'), true);
     }
 
     /**
@@ -65,5 +69,13 @@ abstract class Params implements ParamsInterface
     public function getServer(): array
     {
         return $this->server;
+    }
+
+    /**
+     * @return array
+     */
+    public function getJson(): array
+    {
+        return $this->json;
     }
 }
