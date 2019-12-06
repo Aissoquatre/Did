@@ -120,8 +120,8 @@ abstract class AbstractController
     public function _load(string $templateName, $vars = []): AbstractController
     {
         $this->templateParams = [
-            'templateName' => $this->bundleName . '/Views/' . $templateName . '.twig',
-            'vars' => $vars
+            'templateName' => $this->bundleName . '/View/' . $templateName . '.twig',
+            'vars'         => $vars
         ];
         return $this;
     }

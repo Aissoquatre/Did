@@ -36,7 +36,7 @@ class DefaultRoutingConfig implements RoutingConfigInterface
     {
         /** @var DefaultParams $params */
 
-        $classname = $this->namespace . '\\' . ucfirst($params->getModule()) . '\\Controllers\\' . ucfirst($params->getDivision()) . $this->suffix;
+        $classname = $this->namespace . '\\' . ucfirst($params->getModule()) . '\\Controller\\' . ucfirst($params->getDivision()) . $this->suffix;
 
         if (!class_exists($classname)) {
             throw new \Exception('`' . $classname . '` is undefined');
