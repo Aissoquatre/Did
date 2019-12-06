@@ -54,7 +54,7 @@ abstract class AbstractController
         $this->reflectionClass = new ReflectionClass($this);
         $this->bundleName      = substr(
             strstr(
-                substr($this->reflectionClass->getNamespaceName(), 0, -12),
+                substr($this->reflectionClass->getNamespaceName(), 0, -11),
                 '\\'
             ),
             1
