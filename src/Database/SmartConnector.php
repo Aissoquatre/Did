@@ -109,9 +109,10 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
+     * @param array $clauses
      * @return array
      */
-    public function findAll(array $criterias = [])
+    public function findAll(array $criterias = [], array $clauses = [])
     {
         $return  = [];
         $request = $this->db->prepare(
@@ -119,7 +120,7 @@ class SmartConnector extends AbstractConnection
                 'SELECT %s FROM %s %s',
                 $this->getSelectedColumns() ? $this->getSelectedColumns() : '*',
                 $this->getTable(),
-                $this->createConditions($criterias)
+                $this->createConditions($criterias, $clauses)
             )
         );
         $res = $request->execute();
@@ -303,9 +304,10 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
+     * @param array $clauses
      * @return string
      */
-    private function createConditions(array $criterias)
+    private function createConditions(array $criterias, array $clauses = [])
     {
         $condition = 'WHERE 1';
 
@@ -318,12 +320,19 @@ class SmartConnector extends AbstractConnection
                 }
 
                 $fragment .= 'IN (' . implode(',', $value) . ')';
+            } elseif (preg_match('/^(BETWEEN|LIKE)/', $value)) {
+                $fragment .= $value;
             } else {
                 $fragment .= '= ' . $this->smartFormat($value);
             }
 
             $condition .= $fragment;
         }
+
+        $condition .= (!empty($clauses['groupBy']) ? ' GROUP BY ' . $clauses['groupBy'] : '') .
+            (!empty($clauses['orderBy']) ? ' GROUP BY ' . $clauses['orderBy'] : '') .
+            (!empty($clauses['limit']) ? ' LIMIT ' . $clauses['limit'] : '') .
+            (!empty($clauses['offset']) ? ' OFFSET ' . $clauses['offset'] : '');
 
         return $condition;
     }
