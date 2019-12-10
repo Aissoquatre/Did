@@ -19,7 +19,7 @@ abstract class Params implements ParamsInterface
     /** @var array */
     protected $server;
 
-    /** @var array */
+    /** @var null|array */
     protected $json;
 
     /**
@@ -72,9 +72,9 @@ abstract class Params implements ParamsInterface
     }
 
     /**
-     * @return array
+     * @return null|array
      */
-    public function getJson(): array
+    public function getJson(): ?array
     {
         return $this->json;
     }
