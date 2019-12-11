@@ -219,7 +219,11 @@ class SmartConnector extends AbstractConnection
 
     private function update()
     {
-        //@TODO
+        return sprintf(
+            'UPDATE %s SET %s',
+            $this->getTable(),
+            $this->serialize($this->getOwnProps(), false)
+        );
     }
 
     private function insert()
