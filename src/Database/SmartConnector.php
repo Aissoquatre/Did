@@ -288,11 +288,11 @@ class SmartConnector extends AbstractConnection
                 $return = $value ? 1 : 0;
                 break;
             case 'string':
-                $return =  '"' . $value . '"';
+                $return =  $this->db->quote($value);
                 break;
             case 'array':
             case 'object':
-                $return = serialize($value);
+                $return =  $this->db->quote(serialize($value));
                 break;
             default:
                 $return = $value;
@@ -330,7 +330,7 @@ class SmartConnector extends AbstractConnection
         }
 
         $condition .= (!empty($clauses['groupBy']) ? ' GROUP BY ' . $clauses['groupBy'] : '') .
-            (!empty($clauses['orderBy']) ? ' GROUP BY ' . $clauses['orderBy'] : '') .
+            (!empty($clauses['orderBy']) ? ' ORDER BY ' . $clauses['orderBy'] : '') .
             (!empty($clauses['limit']) ? ' LIMIT ' . $clauses['limit'] : '') .
             (!empty($clauses['offset']) ? ' OFFSET ' . $clauses['offset'] : '');
 
