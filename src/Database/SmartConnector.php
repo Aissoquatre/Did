@@ -220,9 +220,10 @@ class SmartConnector extends AbstractConnection
     private function update()
     {
         return sprintf(
-            'UPDATE %s SET %s',
+            'UPDATE %s SET %s WHERE id = %s',
             $this->getTable(),
-            $this->serialize($this->getOwnProps(), false)
+            $this->serialize($this->getOwnProps(), false),
+            $this->getId()
         );
     }
 
