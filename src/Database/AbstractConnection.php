@@ -26,7 +26,10 @@ abstract class AbstractConnection
             $this->db = new PDO(
                 'mysql:host=' . $database['host'] . ';port=' . $database['port'] . ';dbname=' . $database['dbname'] . ';charset=utf8',
                 $database['user'],
-                $database['password']
+                $database['password'],
+                [
+                    PDO::ATTR_PERSISTENT => true
+                ]
             );
         } catch(PDOException $e) {
             echo 'Failed to connect to database server : ' . $e->getMessage();
