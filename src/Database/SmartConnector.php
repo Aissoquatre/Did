@@ -127,7 +127,13 @@ class SmartConnector extends AbstractConnection
 
         if ($res && ($res = $request->fetchAll(PDO::FETCH_ASSOC))) {
             foreach ($res as $row) {
-                $return[] = $this->toObject($row);
+                $obj = $this->toObject($row);
+
+                if (!empty($clauses['index'])) {
+                    $return[$obj->{'get' . ucfirst($clauses['index'])}()] = $obj;
+                } else {
+                    $return[] = $obj;
+                }
             }
         }
 
