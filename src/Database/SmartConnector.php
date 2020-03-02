@@ -85,9 +85,10 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
+     * @param array $clauses
      * @return null|int
      */
-    public function count(array $criterias = [])
+    public function count(array $criterias = [], array $clauses = [])
     {
         $return  = null;
         $request = $this->db->prepare(
@@ -95,7 +96,7 @@ class SmartConnector extends AbstractConnection
                 'SELECT COUNT(%s) as counter FROM %s %s',
                 $this->getSelectedColumns() ? $this->getSelectedColumns() : static::COUNT_KEY,
                 $this->getTable(),
-                $this->createConditions($criterias)
+                $this->createConditions($criterias, $clauses)
             )
         );
         $res = $request->execute();
