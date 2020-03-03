@@ -11,11 +11,13 @@ use Did\Tools\StringTool;
 /**
  * Class SmartConnector
  *
+ *
  * @package Did\Database
  * @author (c) Julien Bernard <hello@julien-bernard.com>
  *
  * @method getTable()
  * @method getId()
+ * @property bool forDatabase
  */
 class SmartConnector extends AbstractConnection
 {
@@ -193,6 +195,8 @@ class SmartConnector extends AbstractConnection
     public function save()
     {
         try {
+            $this->forDatabase = true;
+
             $request = $this->db->prepare(
                 method_exists($this, 'getId') && $this->getId() ? $this->update() : $this->insert()
             );
@@ -205,7 +209,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
-     * @return array
+     * @return array|bool
      */
     public function delete(array $criterias = [])
     {
