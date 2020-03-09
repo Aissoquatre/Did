@@ -201,7 +201,7 @@ class SmartConnector extends AbstractConnection
                 method_exists($this, 'getId') && $this->getId() ? $this->update() : $this->insert()
             );
 
-            return $request->execute();
+            return $request->execute() ? $this->db->lastInsertId() : false;
         } catch (\PDOException $exception) {
             throw new \PDOException($exception);
         }
