@@ -283,8 +283,18 @@ class SmartConnector extends AbstractConnection
                 $value = $this->smartFormat((new DateTime())->format('Y-m-d H:i:s'));
             }
 
+            if (!$value) {
+                switch (gettype($this->{'get' . ucfirst($prop)}())) {
+                    case 'integer':
+                    case 'boolean':
+                        break;
+                    default:
+                        $value = 'NULL';
+                        break;
+                }
+            }
 
-            $return[] = '`' . $prop . '` = ' . ($value ?: 'NULL');
+            $return[] = '`' . $prop . '` = ' . $value;
         }
 
         return implode(',', $return);
