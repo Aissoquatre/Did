@@ -197,11 +197,18 @@ class SmartConnector extends AbstractConnection
         try {
             $this->forDatabase = true;
 
+            $isUpdate = method_exists($this, 'getId') && $this->getId();
+
             $request = $this->db->prepare(
-                method_exists($this, 'getId') && $this->getId() ? $this->update() : $this->insert()
+                $isUpdate ? $this->update() : $this->insert()
             );
 
-            return $request->execute() ? $this->db->lastInsertId() : false;
+            return $request->execute()
+                ? ($isUpdate
+                    ? $this->getId()
+                    : $this->db->lastInsertId()
+                )
+                : false;
         } catch (\PDOException $exception) {
             throw new \PDOException($exception);
         }
