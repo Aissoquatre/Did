@@ -353,7 +353,7 @@ class SmartConnector extends AbstractConnection
                 }
 
                 $fragment .= 'IN (' . implode(',', $value) . ')';
-            } elseif (preg_match('/^(BETWEEN|LIKE)/', $value)) {
+            } elseif (preg_match('/^(BETWEEN|LIKE|REGEXP)/', $value)) {
                 $fragment .= $value;
             } else {
                 $fragment .= '= ' . $this->smartFormat($value);
