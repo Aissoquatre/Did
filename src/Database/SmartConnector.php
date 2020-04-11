@@ -265,10 +265,31 @@ class SmartConnector extends AbstractConnection
      */
     private function getOwnProps()
     {
-        $props = [];
+        $props              = [];
+        $excludedProperties = [];
+        $traits             = $this->childClass->getTraits();
+
+        if ($traits) {
+            foreach ($traits as $trait) {
+                $reflectedTrait = new ReflectionClass($trait->name);
+
+                if (
+                    in_array('toExclude', $reflectedTrait->getStaticProperties()) &&
+                    $reflectedTrait->getStaticPropertyValue('toExclude') === true
+                ) {
+                    foreach ($reflectedTrait->getProperties() as $property) {
+                        $excludedProperties[$property->name] = $property->name;
+                    }
+                }
+            }
+        }
 
         foreach ($this->childClass->getProperties() as $property) {
             if ($property->class === $this->childClass->name) {
+                if (!empty($excludedProperties) && in_array($property->name, $excludedProperties)) {
+                    continue;
+                }
+
                 $props[] = $property->name;
             }
         }
