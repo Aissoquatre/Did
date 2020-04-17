@@ -192,6 +192,18 @@ class SmartConnector extends AbstractConnection
         return $return;
     }
 
+    /**
+     * @param string $query
+     * @return mixed
+     */
+    public function findBySQL(string $query)
+    {
+        $request = $this->db->prepare($query);
+        $request->execute();
+
+        return $request->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function save()
     {
         try {
