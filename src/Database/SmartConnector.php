@@ -194,14 +194,32 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param string $query
+     * @param array $clauses
      * @return mixed
      */
-    public function findBySQL(string $query)
+    public function findBySQL(string $query, array $clauses = [])
     {
+        $return  = null;
         $request = $this->db->prepare($query);
         $request->execute();
 
-        return $request->fetchAll(PDO::FETCH_ASSOC);
+        $result = $request->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($clauses)) {
+            foreach ($result as $row) {
+                $tmpRow = !empty($clauses['field']) ? $row[$clauses['field']] : $row;
+
+                if (!empty($clauses['index'])) {
+                    $return[$row[$clauses['index']]] = $tmpRow;
+                } else {
+                    $return[] = $tmpRow;
+                }
+            }
+        } else {
+            $return = $result;
+        }
+
+        return $return;
     }
 
     public function save()
