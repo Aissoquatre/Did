@@ -71,18 +71,16 @@ class SmartConnector extends AbstractConnection
     }
 
     /**
-     * @param string $classname
+     * @param string $class
      * @return mixed
      */
-    public static function model(?string $classname = null)
+    public static function model(?string $class = null)
     {
-        if (!$classname) {
-            $classname = static::ENTITY;
+        if (!$class) {
+            $class = static::ENTITY;
         }
 
-        $classname = Environment::get()->findVar('APP_NAMESPACE') . '\Entity\\' . $classname;
-
-        return new $classname();
+        return new $class();
     }
 
     /**
