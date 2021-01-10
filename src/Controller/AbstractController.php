@@ -166,7 +166,7 @@ abstract class AbstractController
      * @param string $status
      * @param mixed $datas
      */
-    public function returnJson(string $status, array $datas = [])
+    public function returnJson(string $status, $datas = null)
     {
         header('content-type: application/json');
         echo json_encode([
