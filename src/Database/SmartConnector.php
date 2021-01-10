@@ -15,17 +15,29 @@ use Did\Tools\StringTool;
  * @package Did\Database
  * @author (c) Julien Bernard <hello@julien-bernard.com>
  *
- * @method getTable()
  * @method getId()
- * @property bool forDatabase
  */
 class SmartConnector extends AbstractConnection
 {
+    /**
+     * @var ReflectionClass
+     */
     protected $childClass;
 
+    /**
+     * @var array
+     */
     protected $errors          = [];
 
+    /**
+     * @var array
+     */
     protected $selectedColumns = [];
+
+    /**
+     * @var bool
+     */
+    public $forDatabase        = false;
 
     public function __construct()
     {
@@ -51,11 +63,23 @@ class SmartConnector extends AbstractConnection
     }
 
     /**
+     * @return string
+     */
+    public function getTable(): string
+    {
+        return static::TABLE;
+    }
+
+    /**
      * @param string $classname
      * @return mixed
      */
-    public static function model($classname)
+    public static function model(?string $classname = null)
     {
+        if (!$classname) {
+            $classname = static::ENTITY;
+        }
+
         $classname = Environment::get()->findVar('APP_NAMESPACE') . '\Entity\\' . $classname;
 
         return new $classname();
@@ -271,7 +295,10 @@ class SmartConnector extends AbstractConnection
         }
     }
 
-    private function update()
+    /**
+     * @return string
+     */
+    private function update(): string
     {
         return sprintf(
             'UPDATE %s SET %s WHERE id = %s',
@@ -281,7 +308,10 @@ class SmartConnector extends AbstractConnection
         );
     }
 
-    private function insert()
+    /**
+     * @return string
+     */
+    private function insert(): string
     {
         return sprintf(
             'INSERT INTO %s SET %s',
@@ -293,7 +323,7 @@ class SmartConnector extends AbstractConnection
     /**
      * @return array
      */
-    private function getOwnProps()
+    private function getOwnProps(): array
     {
         $props              = [];
         $excludedProperties = [];
@@ -397,7 +427,7 @@ class SmartConnector extends AbstractConnection
      * @param array $clauses
      * @return string
      */
-    private function createConditions(array $criterias, array $clauses = [])
+    private function createConditions(array $criterias, array $clauses = []): string
     {
         $condition = 'WHERE 1';
 

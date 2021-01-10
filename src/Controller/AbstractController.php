@@ -44,12 +44,21 @@ abstract class AbstractController
     protected $params;
 
     /**
+     * @var array
+     */
+    protected $lang;
+
+    const SUCCESS = 'success';
+    const ERROR   = 'error';
+
+    /**
      * AbstractController constructor.
      *
      * @param Params $params
      */
     public function __construct(Params $params)
     {
+        $this->lang            = Environment::get()->findVar('LANG');
         $this->params          = $params;
         $this->reflectionClass = new ReflectionClass($this);
         $this->bundleName      = substr(
@@ -70,6 +79,17 @@ abstract class AbstractController
         $this->twig->addGlobal('_session', $_SESSION);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
+
+        // Set prevent cache global to be accessible in all templates
+        $this->twig->addGlobal('_cache', '?' . Environment::get()->findVar('PREVENT_CACHE'));
+
+        // Set filter which offers the possibility to translate a text code
+        $this->addFilter([
+            'name'     => 'translate',
+            'callable' => function($string) {
+                return isset($this->lang[$string]) ? $this->lang[$string] : $string;
+            }
+        ]);
     }
 
     /**
@@ -140,5 +160,19 @@ abstract class AbstractController
     public function display()
     {
         echo $this->twig->render($this->templateParams['templateName'], $this->templateParams['vars']);
+    }
+
+    /**
+     * @param string $status
+     * @param mixed $datas
+     */
+    public function returnJson(string $status, array $datas = [])
+    {
+        header('content-type: application/json');
+        echo json_encode([
+            'status' => $status,
+            'data'   => $datas
+        ]);
+        exit;
     }
 }

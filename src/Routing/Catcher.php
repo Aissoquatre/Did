@@ -2,6 +2,8 @@
 
 namespace Did\Routing;
 
+use Exception;
+
 /**
  * Class Catcher
  *
@@ -11,7 +13,7 @@ namespace Did\Routing;
 class Catcher
 {
     /**
-     * @param $exception
+     * @param Exception $exception
      */
     public static function devCatch($exception)
     {

@@ -4,6 +4,7 @@ namespace Did\Database;
 
 use Did\Kernel\Environment;
 use PDO;
+use PDOException;
 
 /**
  * Class AbstractConnection

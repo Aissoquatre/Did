@@ -48,7 +48,7 @@ class Environment
     }
 
     /**
-     * Set application environnement variables
+     * Set application environnement variables.
      *
      * @param array $vars
      * @return Environment
@@ -60,7 +60,7 @@ class Environment
     }
 
     /**
-     * Smart method that will check in const if not found in vars attribute
+     * Smart method that will check in const if not found in vars attribute.
      *
      * @param string $varName
      * @return mixed
