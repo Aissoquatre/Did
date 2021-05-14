@@ -17,6 +17,7 @@ class TranslationRepository extends SmartConnector
 
     /**
      * @static
+     *
      * @return array
      */
     public static function getAll(): array
@@ -37,8 +38,12 @@ class TranslationRepository extends SmartConnector
     }
 
     /**
+     * @uses findByKey
+     *
+     * @static
      * @param string $key
      * @param null|string $lang
+     *
      * @return mixed
      */
     public static function findByKey(string $key, ?string $lang = null)

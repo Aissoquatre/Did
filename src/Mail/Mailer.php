@@ -9,6 +9,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 /**
  * Class Mailer
  *
+ * @uses Mailer
+ *
  * @package Did\Mail
  * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
@@ -23,9 +25,12 @@ class Mailer
     protected $exception = null;
 
     /**
+     * @uses sendMail
+     *
      * @param array|string $email
-     * @param string $subject
-     * @param string $message
+     * @param string       $subject
+     * @param string       $message
+     *
      * @return bool
      */
     public function sendMail($email, string $subject, string $message): bool
@@ -72,6 +77,8 @@ class Mailer
     }
 
     /**
+     * @uses getSetFrom
+     *
      * @return array
      */
     public function getSetFrom(): array
@@ -80,8 +87,11 @@ class Mailer
     }
 
     /**
+     * @uses setSetFrom
+     *
      * @param string $address
      * @param string $name
+     *
      * @return Mailer
      */
     public function setSetFrom(string $address, string $name): Mailer
@@ -92,6 +102,8 @@ class Mailer
     }
 
     /**
+     * @uses getReplyTo
+     *
      * @return array
      */
     public function getReplyTo(): array
@@ -100,8 +112,11 @@ class Mailer
     }
 
     /**
+     * @uses setReplyTo
+     *
      * @param string $address
      * @param string $name
+     *
      * @return Mailer
      */
     public function setReplyTo(string $address, string $name): Mailer

@@ -44,7 +44,10 @@ class Translation extends TranslationRepository
     }
 
     /**
+     * @uses setId
+     *
      * @param int $id
+     *
      * @return Translation
      */
     public function setId(int $id): Translation
@@ -54,6 +57,8 @@ class Translation extends TranslationRepository
     }
 
     /**
+     * @uses getTKey
+     *
      * @return string
      */
     public function getTKey(): string
@@ -62,7 +67,10 @@ class Translation extends TranslationRepository
     }
 
     /**
+     * @uses setTKey
+     *
      * @param string $tKey
+     *
      * @return Translation
      */
     public function setTKey(string $tKey): Translation
@@ -80,7 +88,10 @@ class Translation extends TranslationRepository
     }
 
     /**
+     * @uses setFr
+     *
      * @param string $fr
+     *
      * @return Translation
      */
     public function setFr(string $fr): Translation
@@ -98,7 +109,10 @@ class Translation extends TranslationRepository
     }
 
     /**
+     * @uses setEn
+     *
      * @param string $en
+     *
      * @return Translation
      */
     public function setEn(string $en): Translation
@@ -116,7 +130,10 @@ class Translation extends TranslationRepository
     }
 
     /**
+     * @uses setEs
+     *
      * @param string $es
+     *
      * @return Translation
      */
     public function setEs(string $es): Translation

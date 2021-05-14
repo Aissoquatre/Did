@@ -11,7 +11,7 @@ namespace Did\Kernel;
 class Environment
 {
     /**
-     * @var Environment|null
+     * @var Environment
      */
     private static $instance = null;
 
@@ -23,12 +23,10 @@ class Environment
     /**
      * Environment constructor.
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
-     * @return Environment|null
+     * @return Environment
      */
     public static function get(): Environment
     {
@@ -51,6 +49,7 @@ class Environment
      * Set application environnement variables.
      *
      * @param array $vars
+     *
      * @return Environment
      */
     public function setVars(array $vars) : Environment
@@ -63,6 +62,7 @@ class Environment
      * Smart method that will check in const if not found in vars attribute.
      *
      * @param string $varName
+     *
      * @return mixed
      */
     public function findVar(string $varName)

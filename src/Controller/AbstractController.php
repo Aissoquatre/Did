@@ -6,12 +6,17 @@ use Did\Kernel\Environment;
 use Did\Routing\Params\Params;
 use ReflectionClass;
 use Twig\Environment as TwigEnvironment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
 /**
  * Class AbstractController
+ *
+ * @uses AbstractController
  *
  * @package Did\Controller
  * @author (c) Julien Bernard <hello@julien-bernard.com>
@@ -71,7 +76,7 @@ abstract class AbstractController
         $this->twig            = new TwigEnvironment(
             new FilesystemLoader(Environment::get()->findVar('TWIG_TEMPLATES_DIR')), [
                 'cache' => (Environment::get()->findVar('APP_ENV') === 'prod') ? Environment::get()->findVar('TWIG_CACHE') : false,
-                'debug' => (Environment::get()->findVar('APP_ENV') === 'prod') ? false : true,
+                'debug' => !(Environment::get()->findVar('APP_ENV') === 'prod'),
             ]
         );
 
@@ -87,12 +92,14 @@ abstract class AbstractController
         $this->addFilter([
             'name'     => 'translate',
             'callable' => function($string) {
-                return isset($this->lang[$string]) ? $this->lang[$string] : $string;
+                return $this->lang[$string] ?? $string;
             }
         ]);
     }
 
     /**
+     * @uses setGlobal
+     *
      * @param array $params
      */
     protected function setGlobal(array $params)
@@ -133,11 +140,14 @@ abstract class AbstractController
     }
 
     /**
+     * @uses _load
+     *
      * @param string $templateName
-     * @param array $vars
+     * @param array  $vars
+     *
      * @return AbstractController
      */
-    public function _load(string $templateName, $vars = []): AbstractController
+    public function _load(string $templateName, array $vars = []): AbstractController
     {
         $this->templateParams = [
             'templateName' => $this->bundleName . '/View/' . $templateName . '.twig',
@@ -147,9 +157,13 @@ abstract class AbstractController
     }
 
     /**
-     * @return mixed
+     * @return string
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function render()
+    public function render(): string
     {
         return $this->twig->render($this->templateParams['templateName'], $this->templateParams['vars']);
     }
@@ -163,8 +177,12 @@ abstract class AbstractController
     }
 
     /**
+     * @uses returnJson
+     * @uses SUCCESS
+     * @uses ERROR
+     *
      * @param string $status
-     * @param mixed $datas
+     * @param mixed  $datas
      */
     public function returnJson(string $status, $datas = null)
     {

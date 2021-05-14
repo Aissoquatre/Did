@@ -5,6 +5,8 @@ namespace Did\Database;
 /**
  * Class Update
  *
+ * @uses Update
+ *
  * @package Did\Database
  * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
@@ -17,16 +19,22 @@ class Update extends AbstractConnection
 
     /**
      * Update constructor.
+     *
      * @param string $path
      */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         parent::connect();
 
         $this->path = $path;
     }
 
-    public function run()
+    /**
+     * @uses run
+     *
+     * @return string
+     */
+    public function run(): string
     {
         $files = array_diff(scandir($this->path), ['..', '.']);
 
@@ -39,9 +47,7 @@ class Update extends AbstractConnection
 
             $extension = pathinfo($file, PATHINFO_EXTENSION);
 
-            if ($extension === 'php') {
-
-            } elseif ($extension === 'sql') {
+            if ($extension === 'sql') {
                 $content = explode(';', file_get_contents($fileFullPath));
 
                 foreach ($content as $query) {

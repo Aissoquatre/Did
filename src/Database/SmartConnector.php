@@ -3,7 +3,6 @@
 namespace Did\Database;
 
 use DateTime;
-use Did\Kernel\Environment;
 use PDO;
 use ReflectionClass;
 use Did\Tools\StringTool;
@@ -57,7 +56,7 @@ class SmartConnector extends AbstractConnection
     /**
      * @return string
      */
-    public function getSelectedColumns()
+    public function getSelectedColumns(): string
     {
         return implode(',', $this->selectedColumns);
     }
@@ -71,7 +70,8 @@ class SmartConnector extends AbstractConnection
     }
 
     /**
-     * @param string $class
+     * @param string|null $class
+     *
      * @return mixed
      */
     public static function model(?string $class = null)
@@ -85,6 +85,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $datas
+     *
      * @return mixed
      */
     public function setAttributes(array $datas)
@@ -98,6 +99,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param string|array $columnName
+     *
      * @return mixed
      */
     public function select($columnName)
@@ -110,15 +112,16 @@ class SmartConnector extends AbstractConnection
     /**
      * @param array $criterias
      * @param array $clauses
+     *
      * @return null|int
      */
-    public function count(array $criterias = [], array $clauses = [])
+    public function count(array $criterias = [], array $clauses = []): ?int
     {
         $return  = null;
         $request = $this->db->prepare(
             sprintf(
                 'SELECT COUNT(%s) as counter FROM %s %s',
-                $this->getSelectedColumns() ? $this->getSelectedColumns() : static::COUNT_KEY,
+                $this->getSelectedColumns() ?: static::COUNT_KEY,
                 $this->getTable(),
                 $this->createConditions($criterias, $clauses)
             )
@@ -135,9 +138,10 @@ class SmartConnector extends AbstractConnection
     /**
      * @param array $criterias
      * @param array $clauses
+     *
      * @return array
      */
-    public function findAll(array $criterias = [], array $clauses = [])
+    public function findAll(array $criterias = [], array $clauses = []): array
     {
         $return  = [];
         $request = $this->db->prepare(
@@ -167,6 +171,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
+     *
      * @return mixed
      */
     public function find(array $criterias = [])
@@ -175,7 +180,7 @@ class SmartConnector extends AbstractConnection
         $request = $this->db->prepare(
             sprintf(
                 'SELECT %s FROM %s %s LIMIT 1',
-                $this->getSelectedColumns() ? $this->getSelectedColumns() : '*',
+                $this->getSelectedColumns() ?: '*',
                 $this->getTable(),
                 $this->createConditions($criterias)
             )
@@ -191,6 +196,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param int $id
+     *
      * @return mixed
      */
     public function findById(int $id)
@@ -216,10 +222,11 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param string $query
-     * @param array $clauses
-     * @return mixed
+     * @param array  $clauses
+     *
+     * @return array
      */
-    public function findBySQL(string $query, array $clauses = [])
+    public function findBySQL(string $query, array $clauses = []): array
     {
         $return  = null;
         $request = $this->db->prepare($query);
@@ -274,9 +281,10 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $criterias
-     * @return array|bool
+     *
+     * @return bool
      */
-    public function delete(array $criterias = [])
+    public function delete(array $criterias = []): bool
     {
         try {
             $request = $this->db->prepare(
@@ -357,7 +365,8 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $props
-     * @param bool $isNew
+     * @param bool  $isNew
+     *
      * @return string
      */
     private function serialize(array $props, bool $isNew = false): string
@@ -394,12 +403,12 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param mixed $value
+     *
      * @return mixed
      */
     private function smartFormat($value)
     {
-        $return = null;
-        $type   = gettype($value);
+        $type = gettype($value);
 
         switch ($type) {
             case 'boolean':
@@ -423,6 +432,7 @@ class SmartConnector extends AbstractConnection
     /**
      * @param array $criterias
      * @param array $clauses
+     *
      * @return string
      */
     private function createConditions(array $criterias, array $clauses = []): string
@@ -457,6 +467,7 @@ class SmartConnector extends AbstractConnection
 
     /**
      * @param array $row
+     *
      * @return mixed
      */
     private function toObject(array $row)

@@ -7,6 +7,8 @@ use Did\Database\Translation\Translation;
 /**
  * Class App
  *
+ * @uses App
+ *
  * @package Did\Kernel
  * @author (c) Julien Bernard <hello@julien-bernard.com>
  */
@@ -14,6 +16,8 @@ class App
 {
     /**
      * Method that load in session everything needed for the application base.
+     *
+     * @uses preLoadApp
      *
      * @param Environment $environmentVars
      */
