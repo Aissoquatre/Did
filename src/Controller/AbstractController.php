@@ -66,13 +66,7 @@ abstract class AbstractController
         $this->lang            = Environment::get()->findVar('LANG');
         $this->params          = $params;
         $this->reflectionClass = new ReflectionClass($this);
-        $this->bundleName      = substr(
-            strstr(
-                substr($this->reflectionClass->getNamespaceName(), 0, -11),
-                '\\'
-            ),
-            1
-        );
+        $this->bundleName      = substr($this->reflectionClass->getNamespaceName(), 14, -11);
 
         $viewsDirectories = [
             Environment::get()->findVar('TWIG_TEMPLATES_DIR') . 'Bundle/'
