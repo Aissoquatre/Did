@@ -73,8 +73,17 @@ abstract class AbstractController
             ),
             1
         );
-        $this->twig            = new TwigEnvironment(
-            new FilesystemLoader(Environment::get()->findVar('TWIG_TEMPLATES_DIR')), [
+
+        $viewsDirectories = [
+            Environment::get()->findVar('TWIG_TEMPLATES_DIR') . 'Bundle/'
+        ];
+
+        if ($this->bundleName) {
+            array_unshift($viewsDirectories, dirname($this->reflectionClass->getFileName(), 2) . '/View');
+        }
+
+        $this->twig = new TwigEnvironment(
+            new FilesystemLoader($viewsDirectories), [
                 'cache' => (Environment::get()->findVar('APP_ENV') === 'prod') ? Environment::get()->findVar('TWIG_CACHE') : false,
                 'debug' => !(Environment::get()->findVar('APP_ENV') === 'prod'),
             ]
@@ -149,6 +158,24 @@ abstract class AbstractController
      */
     public function _load(string $templateName, array $vars = []): AbstractController
     {
+        $bundleName = $this->bundleName;
+
+        if (!empty($params['bundleNameOverride'])) {
+            $bundleName = $params['bundleNameOverride'];
+        }
+
+        if (!$bundleName || !empty($params['bundleNameOverride'])) {
+            if (!$bundleName) {
+                $separatorPos = strpos($templateName, '/View/');
+                $bundleName   = substr($templateName, 0, $separatorPos);
+                $templateName = substr($templateName, $separatorPos + 6);
+            }
+            $this->twig->getLoader()->addPath(
+                Environment::get()->findVar('TWIG_TEMPLATES_DIR') . 'Bundle/' . $bundleName . '/View/'
+            );
+        }
+
+
         $this->templateParams = [
             'templateName' => $this->bundleName . '/View/' . $templateName . '.twig',
             'vars'         => $vars
